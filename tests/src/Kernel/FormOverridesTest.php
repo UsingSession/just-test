@@ -17,10 +17,13 @@ class FormOverridesTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  public static $modules = [
+  protected static $modules = [
     'system',
+    'path_alias',
     'config',
     'block',
+    'block_content',
+    'user',
     'config_override_test',
     'config_override_warn',
   ];
@@ -28,10 +31,11 @@ class FormOverridesTest extends KernelTestBase {
   /**
    * {@inheritdoc}
    */
-  protected function setUp() {
+  protected function setUp(): void {
     parent::setUp();
     $this->installEntitySchema('block');
-    $this->installConfig('config_override_test');
+    $this->installEntitySchema('block_content');
+    $this->installConfig(['config_override_test']);
   }
 
   /**
@@ -69,7 +73,7 @@ class FormOverridesTest extends KernelTestBase {
    * @return array
    *   An array of test cases.
    */
-  public function providerFormOverrides() {
+  public static function providerFormOverrides() {
     return [
       // Test with show_values turned on, show that both name and slogan are
       // overridden with their original and overridden values.
@@ -88,7 +92,7 @@ class FormOverridesTest extends KernelTestBase {
           'system.site' => [
             'name' => [
               'original' => '\'Original name\'',
-              'override' => '\'ZOMG overridden site name\'',
+              'override' => '\'Wow overridden site name\'',
             ],
             'slogan' => [
               'original' => '\'Original slogan\'',
@@ -114,7 +118,7 @@ class FormOverridesTest extends KernelTestBase {
           'system.site' => [
             'name' => [
               'original' => '\'Original name\'',
-              'override' => '\'ZOMG overridden site name\'',
+              'override' => '\'Wow overridden site name\'',
             ],
           ],
         ],
@@ -137,7 +141,7 @@ class FormOverridesTest extends KernelTestBase {
       [
         [
           'system.site' => [
-            'name' => 'ZOMG overridden site name',
+            'name' => 'Wow overridden site name',
           ],
         ],
         SiteInformationForm::class,
@@ -196,7 +200,7 @@ class FormOverridesTest extends KernelTestBase {
    * @return array
    *   An array of test cases.
    */
-  public function providerConfigEntityOverrides() {
+  public static function providerConfigEntityOverrides() {
     return [
       // Test with show_values turned on.
       [

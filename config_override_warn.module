@@ -29,7 +29,7 @@ function config_override_warn_form_alter(&$form, FormStateInterface $form_state,
       '#theme' => 'config_override_warn_overrides',
       '#overrides' => $overrides,
     ];
-    $warning = \Drupal::service('renderer')->renderPlain($override_output);
+    $warning = \Drupal::service('renderer')->renderInIsolation($override_output);
     \Drupal::service('messenger')->addWarning($warning);
   }
 }
